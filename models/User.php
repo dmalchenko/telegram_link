@@ -14,7 +14,7 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
         '100' => [
             'id' => '100',
             'username' => 'admin',
-            'password' => 'admin', //46a0dabbd49397221e6059c864cd339a
+            'password' => '46a0dabbd49397221e6059c864cd339a', //
             'authKey' => 'test100key',
             'accessToken' => '100-token',
         ],
