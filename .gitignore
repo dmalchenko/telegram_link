@@ -32,7 +32,6 @@ tests/_support/_generated
 #vagrant folder
 /.vagrant
 ### Yii template
-assets/*
 !assets/.gitignore
 protected/runtime/*
 !protected/runtime/.gitignore
