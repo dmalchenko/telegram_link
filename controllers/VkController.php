@@ -70,6 +70,9 @@ class VkController extends Controller
         $browser_url = $oauth->getAuthorizeUrl(VKOAuthResponseType::CODE, $client_id, $redirect_uri, $display, $scope);
 
         $token = Token::findOne(['id' => 1]);
+        if (!$token) {
+            $token = new Token();
+        }
 
         $wall = Wall::find()->asArray()->all();
         return $this->render('index', [
