@@ -11,7 +11,13 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'timeZone' => 'Europe/Minsk',
     'components' => [
+        'formatter' => [
+            'dateFormat' => 'd.MM.yyyy',
+            'timeFormat' => 'H:mm:ss',
+            'datetimeFormat' => 'd.MM.yyyy H:mm',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'qVekIqB7_UuRox38eIl0_mktIhIZCrHu',
@@ -49,6 +55,7 @@ $config = [
             'rules' => [
                 'joinchat/<item>' => 'site/joinchat',
                 'admin' => 'site/admin',
+                'vk/<action>' => 'vk/<action>',
                 'site/<action>' => 'site/<action>',
                 '<action>' => 'site/resolve',
             ],

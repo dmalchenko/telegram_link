@@ -2,14 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\LoginForm;
 use app\models\TelegramUrl;
 use Yii;
 use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
 
 class SiteController extends Controller
 {
@@ -74,6 +73,9 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            if (Yii::$app->user->getId() == 101) {
+                return $this->redirect(['/vk/index']);
+            }
             return $this->goBack();
         }
 

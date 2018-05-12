@@ -121,3 +121,16 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.post {
+    border: 1px solid #0f0f0f;
+    margin: 25px;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
