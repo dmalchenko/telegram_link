@@ -51,9 +51,8 @@ class Wall extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function getGroupUserLiked($post_id)
+    public static function getGroupUserLiked($post_id, $token)
     {
-        $token = Yii::$app->params['token'];
         $group_id = Yii::$app->params['group_id'];
         $page = 0;
         $limit = 1000;

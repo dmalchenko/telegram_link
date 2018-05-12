@@ -79,7 +79,7 @@ class VkController extends Controller
         $wall = json_decode(file_get_contents("https://api.vk.com/method/wall.get?owner_id=-$group_id&v=5.74&count=100&access_token=$token"), true);
 
         foreach ($wall['response']['items'] as $post) {
-            $likesData = Wall::getGroupUserLiked($post['id']);
+            $likesData = Wall::getGroupUserLiked($post['id'], $token);
 
             $data[] = [
                 'post_id' => $post['id'],
