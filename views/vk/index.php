@@ -7,7 +7,7 @@
 
 $this->title = 'VK stat';
 
-$token_live = $token->expires_in < time() + 10800 ? 'red' : 'green';
+$token_live = $token->expires_in < time() ? 'red' : 'green';
 $formatter = \Yii::$app->formatter;
 
 
