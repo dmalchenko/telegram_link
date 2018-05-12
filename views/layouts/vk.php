@@ -29,8 +29,8 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Telegram links',
-        'brandUrl' => '/site/admin',
+        'brandLabel' => 'VK stats',
+        'brandUrl' => '/vk/index',
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
