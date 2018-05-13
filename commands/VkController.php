@@ -76,9 +76,16 @@ class VkController extends Controller
         $group_id = Yii::$app->params['group_id'];
 
         $data = [];
-        $wall = json_decode(file_get_contents("https://api.vk.com/method/wall.get?owner_id=-$group_id&v=5.74&count=100&access_token=$token"), true);
+        $wall100 = json_decode(file_get_contents("https://api.vk.com/method/wall.get?owner_id=-$group_id&v=5.74&count=100&access_token=$token"), true);
+        usleep(333333);
+        $wall200 = json_decode(file_get_contents("https://api.vk.com/method/wall.get?owner_id=-$group_id&v=5.74&count=100&access_token=$token&offset=100"), true);
+        usleep(333333);
+        $wall300 = json_decode(file_get_contents("https://api.vk.com/method/wall.get?owner_id=-$group_id&v=5.74&count=100&access_token=$token&offset=200"), true);
+        usleep(333333);
 
-        foreach ($wall['response']['items'] as $post) {
+        $items = array_merge($wall100['response']['items'], $wall200['response']['items'], $wall300['response']['items']);
+
+        foreach ($items as $post) {
             $likesData = Wall::getGroupUserLiked($post['id'], $token);
 
             $data[] = [
@@ -94,7 +101,6 @@ class VkController extends Controller
         Yii::$app->db->createCommand()
             ->batchInsert(Wall::tableName(), array_keys($data[0]), $data)
             ->execute();
-
 
         $end = microtime(true);
 
