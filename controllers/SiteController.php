@@ -8,6 +8,7 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
+use yii\web\ForbiddenHttpException;
 use yii\web\Response;
 
 class SiteController extends Controller
@@ -124,11 +125,16 @@ class SiteController extends Controller
     /**
      * @param $item
      * @return string
+     * @throws ForbiddenHttpException
      */
     public function actionAdmin()
     {
-        if (Yii::$app->user->isGuest || Yii::$app->user->getId() != 100) {
+        if (Yii::$app->user->isGuest) {
             return $this->redirect(['site/login']);
+        }
+
+        if (Yii::$app->user->getId() != 100) {
+            throw new ForbiddenHttpException('NO ACCESS');
         }
 
         $model = new TelegramUrl();
