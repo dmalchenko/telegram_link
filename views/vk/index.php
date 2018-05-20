@@ -2,54 +2,87 @@
 
 /* @var $this yii\web\View */
 /* @var $wall array */
-/* @var $vk_url string */
-/* @var $token \app\models\Token */
+/* @var $url_template string */
 
-$this->title = 'VK stat';
+/* @var $vk_filter \app\models\VkFilterClass */
 
-$token_live = $token->expires_in < time() ? 'red' : 'green';
+use kartik\field\FieldRange;
+use kartik\form\ActiveForm;
+use kartik\helpers\Html;
+
+$this->title = 'VK stats';
+
 $formatter = \Yii::$app->formatter;
 
+$img_block = '<img src="%s" alt="" width="200px">';
 
 $block = <<<HTML
 <div class="col-lg-12 post">
     <h2>Post id: %s, %s</h2>
     
     <h4>Всего лайков: %s</h4>
-    <h4>Состоят в группе: %s (%s%%)</h4>
-    <h4> Не состоят в группе: %s (%s%%)</h4>
+    <h4>Состоят в группе: %s</h4>
+    <h4> Не состоят в группе: %s</h4>
 
     <p>%s</p>
     
-    <img src="%s" alt="">
+   %s
 
 </div>
 HTML;
 ?>
 <div class="site-index">
-    <p>token действителен до <span
-                class="<?= $token_live ?>"><?= date("Y-m-d H:i:s", $token->expires_in) ?></span></p>
-    <a href="<?= $vk_url ?>" class="btn btn-success">Обновить токен</a>
     <div class="body-content">
+        <div class="row">
+
+            <?php
+            try {
+                $form = ActiveForm::begin();
+
+                echo FieldRange::widget([
+                    'form' => $form,
+                    'model' => $vk_filter,
+                    'label' => 'Enter date range',
+                    'attribute1' => 'begin_date',
+                    'attribute2' => 'end_date',
+                    'type' => FieldRange::INPUT_DATE,
+                ]);
+
+                echo Html::submitButton('Поиск', ['class' => 'btn btn-primary', 'name' => 'login-button']);
+
+                ActiveForm::end();
+
+            } catch (Exception $e) {
+                var_dump($e->getMessage());
+            }
+            ?>
+        </div>
 
         <div class="row">
             <?php
             if (is_array($wall)) {
                 foreach ($wall as $post) {
-                    $likePercent = $post['likes'] > 0 ? round($post['likes_group'] / $post['likes'] * 100, 2) : 0;
 
                     try {
+                        $img = '';
+                        $images = json_decode($post['image']);
+                        if ($images) {
+                            foreach ($images as $image) {
+                                if ($image) {
+                                    $img .= sprintf($img_block, $image);
+                                }
+                            }
+                        }
+
                         echo sprintf($block,
-                            $post['post_id'],
+                            \yii\helpers\Html::a($post['post_id'], sprintf($url_template, $post['post_id'])),
                             $formatter->asDatetime($post['created_at']),
                             //                        date("Y-m-d H:i:s", $post['created_at']),
                             $post['likes'],
                             $post['likes_group'],
-                            $likePercent,
                             $post['likes'] - $post['likes_group'],
-                            $likePercent > 0 ? 100 - $likePercent : 0,
                             $post['text'],
-                            $post['image']
+                            $img
                         );
                     } catch (\yii\base\InvalidConfigException $e) {
                     }

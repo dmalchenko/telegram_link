@@ -3,8 +3,11 @@
 namespace app\controllers;
 
 
+use app\models\Group;
 use app\models\Token;
+use app\models\VkFilterClass;
 use app\models\Wall;
+use DateTime;
 use VK\Exceptions\VKClientException;
 use VK\Exceptions\VKOAuthException;
 use VK\OAuth\Scopes\VKOAuthUserScope;
@@ -14,6 +17,7 @@ use VK\OAuth\VKOAuthResponseType;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 
 class VkController extends Controller
@@ -61,24 +65,31 @@ class VkController extends Controller
             return $this->redirect(['site/login']);
         }
 
-        $oauth = new VKOAuth();
-        $client_id = Yii::$app->params['vk_id'];
-        $redirect_uri = Yii::$app->params['vk_redirect_uri'];
-        $display = VKOAuthDisplay::PAGE;
-        $scope = array(VKOAuthUserScope::WALL, VKOAuthUserScope::GROUPS);
+        $url_template = 'https://vk.com/ohmsk?w=wall-77253035_%s';
 
-        $browser_url = $oauth->getAuthorizeUrl(VKOAuthResponseType::CODE, $client_id, $redirect_uri, $display, $scope);
+        $vkFilter = new VkFilterClass();
+        $vkFilter->load(Yii::$app->request->post());
 
-        $token = Token::findOne(['id' => 1]);
-        if (!$token) {
-            $token = new Token();
+        $query = Wall::find()->orderBy(['likes_group' => SORT_DESC]);
+
+        if ($vkFilter->begin_date && $vkFilter->end_date) {
+            $format = "m/d/Y";
+            $begin_date_obj = DateTime::createFromFormat($format, $vkFilter->begin_date);
+            $begin_date = $begin_date_obj->format('U');
+            $begin_date = strtotime('midnight', $begin_date);
+
+            $end_date_obj = DateTime::createFromFormat($format, $vkFilter->end_date);
+            $end_date = $end_date_obj->format('U');
+            $end_date = strtotime('+1 day midnight', $end_date);
+            $query->andFilterWhere(['and', ['>', 'created_at', $begin_date], ['<', 'created_at', $end_date]]);
         }
 
-        $wall = Wall::find()->asArray()->all();
+        $wall = $query->asArray()->all();
+
         return $this->render('index', [
             'wall' => $wall,
-            'vk_url' => $browser_url,
-            'token' => $token
+            'url_template' => $url_template,
+            'vk_filter' => $vkFilter
         ]);
     }
 
@@ -114,7 +125,67 @@ class VkController extends Controller
             }
         }
 
-        return $this->redirect('index');
+        return $this->redirect('admin');
+    }
+
+    public function actionAdmin()
+    {
+        $oauth = new VKOAuth();
+        $client_id = Yii::$app->params['vk_id'];
+        $redirect_uri = Yii::$app->params['vk_redirect_uri'];
+        $display = VKOAuthDisplay::PAGE;
+        $scope = array(VKOAuthUserScope::WALL, VKOAuthUserScope::GROUPS);
+
+        $browser_url = $oauth->getAuthorizeUrl(VKOAuthResponseType::CODE, $client_id, $redirect_uri, $display, $scope);
+
+        $token = Token::findOne(['id' => 1]);
+        if (!$token) {
+            $token = new Token();
+        }
+
+        $access_token = $token->access_token;
+
+        $group = Group::findOne(1) ?: new Group();
+        if ($group->load(Yii::$app->request->post())) {
+            $group->statusOff();
+            $group_name = preg_replace('/https:\/\/vk.com\//', '', $group->link);
+            $g = json_decode(file_get_contents("https://api.vk.com/method/groups.getById?group_id=$group_name&v=5.74&access_token=$access_token"), true);
+            $group->group_id = intval(ArrayHelper::getValue($g, 'response.0.id'));
+            $group->save();
+        }
+
+        return $this->render('admin', [
+            'vk_url' => $browser_url,
+            'token' => $token,
+            'group' => $group,
+        ]);
+    }
+
+    /**
+     * @return \yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionRunParser()
+    {
+        $group = Group::findOne(1) ?: new Group();
+        $group->statusRun();
+        $group->update();
+        return $this->redirect('admin');
+    }
+
+    /**
+     * @return \yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\db\StaleObjectException
+     */
+    public function actionOffParser()
+    {
+        $group = Group::findOne(1) ?: new Group();
+        $group->statusOff();
+        $group->update();
+
+        return $this->redirect('admin');
     }
 
 }

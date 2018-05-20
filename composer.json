@@ -18,7 +18,12 @@
         "yiisoft/yii2": "~2.0.14",
         "yiisoft/yii2-bootstrap": "~2.0.0",
       "yiisoft/yii2-swiftmailer": "~2.0.0",
-      "vkcom/vk-php-sdk": "^0.2.0"
+      "vkcom/vk-php-sdk": "^0.2.0",
+      "kartik-v/yii2-field-range": "*",
+      "kartik-v/yii2-date-range": "*",
+      "kartik-v/yii2-datecontrol": "*",
+      "kartik-v/yii2-widget-datetimepicker": "*",
+      "kartik-v/yii2-widget-datepicker": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
