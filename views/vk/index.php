@@ -43,10 +43,11 @@ HTML;
                 echo FieldRange::widget([
                     'form' => $form,
                     'model' => $vk_filter,
-                    'label' => 'Enter date range',
+                    'label' => 'Задайте интервал поиска',
                     'attribute1' => 'begin_date',
                     'attribute2' => 'end_date',
                     'type' => FieldRange::INPUT_DATE,
+                    'separator' => '&larr; до &rarr;'
                 ]);
 
                 echo Html::submitButton('Поиск', ['class' => 'btn btn-primary', 'name' => 'login-button']);
@@ -76,7 +77,7 @@ HTML;
                         }
 
                         echo sprintf($block,
-                            \yii\helpers\Html::a('Open VK', sprintf($url_template, $post['post_id']), ['class' => 'btn btn-info pr', 'target' => 'blank']),
+                            \yii\helpers\Html::a('Открыть пост ВК', sprintf($url_template, $post['post_id']), ['class' => 'btn btn-info pr', 'target' => 'blank']),
                             $formatter->asDatetime($post['created_at']),
                             //                        date("Y-m-d H:i:s", $post['created_at']),
                             $post['likes'],
