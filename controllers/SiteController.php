@@ -74,7 +74,7 @@ class SiteController extends Controller
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             if (Yii::$app->user->getId() == 101) {
-                return $this->redirect(['/vk/index']);
+                return $this->redirect(['/vk/admin']);
             }
             return $this->goBack();
         }
