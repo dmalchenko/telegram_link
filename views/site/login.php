@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <h4>Панель администратора</h4>
 
         <img src="/vk-dog-1.jpg" alt="" width="120px"
-             style="border: 10px solid #5a5a5a; border-radius: 60px; margin-top: 25px">
+             style="border: 10px solid #1d1d1d; border-radius: 60px; margin-top: 25px">
         <br>
         <?php $form = ActiveForm::begin([
             'id' => 'login-form',
