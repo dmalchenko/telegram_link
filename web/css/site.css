@@ -172,7 +172,6 @@ a.desc:after {
 }
 
 .vk-back {
-    background: url('../back-fastfood.svg');
+    background: url('../back_vk3.png');
     background-repeat: repeat;
-    background-size: 100%; /* Современные браузеры */
 }
