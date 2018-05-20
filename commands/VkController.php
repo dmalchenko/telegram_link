@@ -92,6 +92,10 @@ class VkController extends Controller
             $part_time = microtime(true) - $start;
             echo "{$offset} {$part_time}\n";
 
+            if (!count($items['response']['items'])) {
+                $loop = false;
+            }
+
             foreach ($items['response']['items'] as $post) {
                 $likesData = Wall::getGroupUserLiked($group_id, $post['id'], $token);
 
@@ -117,6 +121,7 @@ class VkController extends Controller
             $offset += 100;
         } while ($loop);
 
+        echo "End\n";
         $group->statusOff();
         $group->update();
 
