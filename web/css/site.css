@@ -123,10 +123,19 @@ a.desc:after {
 }
 
 .post {
-    border: 1px solid #0f0f0f;
+    border: 1px solid #babcbc;
+    border-radius: 5px;
     margin: 25px;
     padding-bottom: 25px;
     background-color: #fdfdfd;
+}
+
+.post:hover {
+    border: 1px solid #000000;
+}
+
+.post img {
+    padding: 5px;
 }
 
 .green {
@@ -135,4 +144,8 @@ a.desc:after {
 
 .red {
     color: red;
+}
+
+.pr {
+    margin: 20px 5px;
 }

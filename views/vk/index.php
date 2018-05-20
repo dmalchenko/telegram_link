@@ -18,7 +18,8 @@ $img_block = '<img src="%s" alt="" width="200px">';
 
 $block = <<<HTML
 <div class="col-lg-12 post">
-    <h2>Post id: %s, %s</h2>
+    <p class="pull-right">%s</p>
+    <h2>%s</h2>
     
     <h4>Всего лайков: %s</h4>
     <h4>Состоят в группе: %s</h4>
@@ -75,7 +76,7 @@ HTML;
                         }
 
                         echo sprintf($block,
-                            \yii\helpers\Html::a($post['post_id'], sprintf($url_template, $post['post_id'])),
+                            \yii\helpers\Html::a('Open VK', sprintf($url_template, $post['post_id']), ['class' => 'btn btn-info pr', 'target' => 'blank']),
                             $formatter->asDatetime($post['created_at']),
                             //                        date("Y-m-d H:i:s", $post['created_at']),
                             $post['likes'],
