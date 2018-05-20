@@ -134,6 +134,8 @@ class VkController extends Controller
 
     public function actionAdmin()
     {
+        $this->layout = 'vk_admin';
+
         $oauth = new VKOAuth();
         $client_id = Yii::$app->params['vk_id'];
         $redirect_uri = Yii::$app->params['vk_redirect_uri'];

@@ -26,7 +26,7 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap vk-back">
+<div class="wrap vk-back-admin">
     <?php
     NavBar::begin([
         'brandLabel' => 'Администратор ВКонтакте',
@@ -57,7 +57,7 @@ AppAsset::register($this);
     NavBar::end();
     ?>
 
-    <div class="container vk-back-result">
+    <div class="container">
 
         <?= Alert::widget() ?>
         <?= $content ?>

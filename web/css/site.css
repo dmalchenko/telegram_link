@@ -175,3 +175,13 @@ a.desc:after {
     background: url('../back_vk3.png');
     background-repeat: repeat;
 }
+
+.vk-back-admin {
+    background: url('../back_vk.jpg');
+    background-repeat: repeat;
+}
+
+.vk-back-result {
+    background-color: #ecececf5;
+    padding: 70px 70px 15px 20px !important;
+}
