@@ -114,9 +114,11 @@ class VkController extends Controller
                 }
             }
 
-            Yii::$app->db->createCommand()
-                ->batchInsert(Wall::tableName(), array_keys($data[0]), $data)
-                ->execute();
+            if (count($data)) {
+                Yii::$app->db->createCommand()
+                    ->batchInsert(Wall::tableName(), array_keys($data[0]), $data)
+                    ->execute();
+            }
 
             $offset += 100;
         } while ($loop);
