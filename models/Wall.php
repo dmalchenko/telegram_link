@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-
 /**
  * This is the model class for table "wall".
  *
@@ -51,9 +49,8 @@ class Wall extends \yii\db\ActiveRecord
         ];
     }
 
-    public static function getGroupUserLiked($post_id, $token)
+    public static function getGroupUserLiked($group_id, $post_id, $token)
     {
-        $group_id = Yii::$app->params['group_id'];
         $page = 0;
         $limit = 1000;
         $likes = [];

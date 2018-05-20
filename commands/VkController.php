@@ -68,39 +68,45 @@ class VkController extends Controller
 
         //get wall
         $start = microtime(true);
-        sleep(5);
+        sleep(2);
         Yii::$app->db->createCommand()->truncateTable(Wall::tableName())->execute();
 
         $tokenModel = Token::findOne(['id' => 1]);
         $token = $tokenModel->access_token;
-        $group_id = Yii::$app->params['group_id'];
+        $time_ago = strtotime('-1 month midnight');
 
-        $data = [];
-        $wall100 = json_decode(file_get_contents("https://api.vk.com/method/wall.get?owner_id=-$group_id&v=5.74&count=100&access_token=$token"), true);
-        usleep(333333);
-        $wall200 = json_decode(file_get_contents("https://api.vk.com/method/wall.get?owner_id=-$group_id&v=5.74&count=100&access_token=$token&offset=100"), true);
-        usleep(333333);
-        $wall300 = json_decode(file_get_contents("https://api.vk.com/method/wall.get?owner_id=-$group_id&v=5.74&count=100&access_token=$token&offset=200"), true);
-        usleep(333333);
+        $offset = 0;
 
-        $items = array_merge($wall100['response']['items'], $wall200['response']['items'], $wall300['response']['items']);
+        $loop = true;
+        do {
+            $data = [];
+            $items = json_decode(file_get_contents("https://api.vk.com/method/wall.get?owner_id=-$group_id&v=5.74&count=100&access_token=$token&offset=$offset"), true);
+            usleep(333333);
 
-        foreach ($items as $post) {
-            $likesData = Wall::getGroupUserLiked($post['id'], $token);
+            foreach ($items as $post) {
+                $likesData = Wall::getGroupUserLiked($group_id, $post['id'], $token);
 
-            $data[] = [
-                'post_id' => $post['id'],
-                'text' => $post['text'],
-                'image' => $this->getLink($post),
-                'likes' => ArrayHelper::getValue($likesData, 'likes'),
-                'likes_group' => ArrayHelper::getValue($likesData, 'likes_group'),
-                'created_at' => $post['date'],
-            ];
-        }
+                $data[] = [
+                    'post_id' => $post['id'],
+                    'text' => $post['text'],
+                    'image' => $this->getLink($post),
+                    'likes' => ArrayHelper::getValue($likesData, 'likes'),
+                    'likes_group' => ArrayHelper::getValue($likesData, 'likes_group'),
+                    'created_at' => $post['date'],
+                ];
 
-        Yii::$app->db->createCommand()
-            ->batchInsert(Wall::tableName(), array_keys($data[0]), $data)
-            ->execute();
+                if ($post['date'] < $time_ago) {
+                    $loop = false;
+                    break;
+                }
+            }
+
+            Yii::$app->db->createCommand()
+                ->batchInsert(Wall::tableName(), array_keys($data[0]), $data)
+                ->execute();
+
+            $offset += 100;
+        } while ($loop);
 
         $end = microtime(true);
 
