@@ -127,7 +127,7 @@ class SiteController extends Controller
      */
     public function actionAdmin()
     {
-        if (Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest || Yii::$app->user->getId() != 100) {
             return $this->redirect(['site/login']);
         }
 

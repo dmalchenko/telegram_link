@@ -19,7 +19,7 @@ $img_block = '<img src="%s" alt="" width="200px">';
 $block = <<<HTML
 <div class="col-lg-12 post">
     <p class="pull-right">%s</p>
-    <h2>%s</h2>
+    <h3>%s</h3>
     
     <h4>Всего лайков: %s</h4>
     <h4>Состоят в группе: %s</h4>
@@ -34,7 +34,7 @@ HTML;
 ?>
 <div class="site-index">
     <div class="body-content">
-        <div class="row">
+        <div class="row" style="padding-left: 25px;">
 
             <?php
             try {
