@@ -164,7 +164,7 @@ a.desc:after {
 
 .login-back {
     color: #dddddd;
-    background: url('../login.jpg') repeat;
+    background: url('../login.jpg') no-repeat;
     -moz-background-size: 100%; /* Firefox 3.6+ */
     -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
     -o-background-size: 100%; /* Opera 9.6+ */
@@ -172,7 +172,7 @@ a.desc:after {
 }
 
 .vk-back {
-    background: url('../back_vk2.jpg') no-repeat;
+    background: url('../back-fastfood.svg') repeat;
     -moz-background-size: 100%; /* Firefox 3.6+ */
     -webkit-background-size: 100%; /* Safari 3.1+ и Chrome 4.0+ */
     -o-background-size: 100%; /* Opera 9.6+ */
