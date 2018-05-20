@@ -65,7 +65,12 @@ class VkController extends Controller
             return $this->redirect(['site/login']);
         }
 
-        $url_template = 'https://vk.com/ohmsk?w=wall-77253035_%s';
+
+        $url_template = '%s';
+        $group = Group::findOne(1);
+        if ($group) {
+            $url_template = "{$group->link}?w=wall-{$group->group_id}_%s";
+        }
 
         $vkFilter = new VkFilterClass();
         $vkFilter->load(Yii::$app->request->post());
