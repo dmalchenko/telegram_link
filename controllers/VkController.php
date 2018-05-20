@@ -65,7 +65,6 @@ class VkController extends Controller
             return $this->redirect(['site/login']);
         }
 
-
         $url_template = '%s';
         $group = Group::findOne(1);
         if ($group) {
