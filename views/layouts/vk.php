@@ -29,7 +29,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'VK stats',
+        'brandLabel' => 'Администратор ВКонтакте',
         'brandUrl' => '/vk/index',
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -38,15 +38,15 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'VK Stats', 'url' => ['/vk/index']],
-            ['label' => 'Admin', 'url' => ['/vk/admin']],
+            ['label' => 'Результаты', 'url' => ['/vk/index']],
+            ['label' => 'Управление', 'url' => ['/vk/admin']],
             Yii::$app->user->isGuest ? (
             ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
                 . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    'Выход (' . Yii::$app->user->identity->username . ')',
                     ['class' => 'btn btn-link logout']
                 )
                 . Html::endForm()
