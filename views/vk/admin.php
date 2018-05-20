@@ -52,7 +52,7 @@ $formatter = \Yii::$app->formatter;
                     <?= Html::submitButton('Сохранить', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
                     <a href="<?= $vk_url ?>" class="btn btn-success">Новый токен</a>
                     <a href="<?= $group->isRun() ? '#' : \yii\helpers\Url::to(['vk/run-parser']) ?>"
-                       class="btn  <?= $group->isRun() ? 'btn-warning' : 'btn-success' ?>" <?= $group->isRun() ? 'disabled' : '' ?>>Рассчет</a>
+                       class="btn  <?= $group->isRun() ? 'btn-warning' : 'btn-success' ?>" <?= $group->isRun() ? 'disabled' : '' ?>>Расчет</a>
                     <a href="<?= \yii\helpers\Url::to(['vk/off-parser']) ?>" class="btn btn-info">Сброс</a>
                 </div>
             </div>
